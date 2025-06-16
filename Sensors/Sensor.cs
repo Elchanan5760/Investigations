@@ -15,6 +15,15 @@ namespace IranianAgentInvestigation.Sensors
         {
             this.sensorName = sensorName;
         }
-        
+        public bool Activate(string weakness)
+        {
+            bool bol = false;
+            if (weakness == sensorName)
+            {
+                bol = true;
+            }
+                
+            return bol;
+        }
     }
 }

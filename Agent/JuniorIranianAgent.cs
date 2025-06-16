@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace IranianAgentInvestigation.Agent
 {
-    public class JuniorIranianAgent
+    public class IranianAgent
     {
-        public string[] weaknesses { get; private set; }
-        public JuniorIranianAgent(string weaknes1, string weaknes2)
-        {
-            weaknesses[0] = weaknes1;
-            weaknesses[1] = weaknes2;
-        }
+        public string[] weaknesses = new string[2] { "thermal", "basic" };
     }
 }
