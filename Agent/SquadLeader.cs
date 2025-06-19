@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace IranianAgentInvestigation.Agent
 {
-    internal class SquadLeader
+    public class SquadLeader:IranianAgent
     {
+
     }
 }

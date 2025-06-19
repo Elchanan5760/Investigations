@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace IranianAgentInvestigation.Agent
 {
-    public class IranianAgent
+    public abstract class IranianAgent
     {
-        public string[] weaknesses = new string[2] { "pulse", "basic" };
+        public abstract int id { get; set; }
+        public abstract string name { get; set; }
+        public abstract string rank { get; set; }
+        public abstract string[] weaknesses { get; set; }
     }
 }
