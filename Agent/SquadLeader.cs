@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IranianAgentInvestigation.Agent
 {
-    public class IranianAgent
+    internal class SquadLeader
     {
-        public string[] weaknesses = new string[2] { "pulse", "basic" };
     }
 }

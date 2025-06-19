@@ -1,51 +1,96 @@
-﻿using System;
+﻿using IranianAgentInvestigation.Agent;
+using IranianAgentInvestigation.Sensors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using IranianAgentInvestigation.Sensors;
-using IranianAgentInvestigation.Agent;
 
 namespace IranianAgentInvestigation.Manager
 {
     public class InvestigationManager
     {
         public Sensor[] sensors { set; private get; }
+        int suitable = 0;
+        FactorySensors factorySensors = new FactorySensors();
         public void Menu()                      
         {
             IranianAgent iranianAgent = new IranianAgent();
             bool cond = true;
-            int index = 0;
-            Sensor[] sensors = new Sensor[iranianAgent.weaknesses.Length];
+            sensors = new Sensor[iranianAgent.weaknesses.Length];
             do
-            {
-                
+            { 
                 Console.WriteLine("What sensor do you want to add:");
                 string sensorName = Console.ReadLine();
-                Sensor sensor = new Sensor(sensorName);
-                if (sensor.Activate(iranianAgent.weaknesses[index]))
-                {
-                    sensors[index] = sensor;
-                    Console.WriteLine(sensor.sensorName);
-                    index++;
-                }
+                sensorName = sensorName.ToLower();
+                Sensor sensor;
                 
-                Console.WriteLine($"{index}/{iranianAgent.weaknesses.Length}");
-                if (index == iranianAgent.weaknesses.Length)
-                {
-                    foreach (Sensor sensor1 in sensors)
-                    {
-                        Console.WriteLine($"{sensor1.sensorName}");
-                    }
-                    Console.WriteLine("The agent was exposed!!!");
-                    cond = false;
-                }
+                cond = ActivateSensors(iranianAgent,sensorName);
+                
             }
             while (cond);
         }
+
+
+
+        public bool ActivateSensors(IranianAgent iranianAgent,string sensorName)
+        {
+            int activeCount = suitable;
+            for (int i = 0; i < suitable + 1; i++)
+            {
                 
-            
+                if (sensors[i] == null)
+                {
+                    if (sensorName == iranianAgent.weaknesses[i])
+                    {
+                        sensors[i] = factorySensors.CreatSensor(sensorName);
+                        if (sensors[i].Activate(iranianAgent.weaknesses[i]))
+                        {
+                            activeCount++;
+                        }
+                    }
+                }
+                else
+                {
+                    sensors[i].Activate(iranianAgent.weaknesses[i]);
+                }
+                if (sensors[i] is PulseSensor pulse)
+                {
+                    Console.WriteLine("hi");
+                    Console.WriteLine(pulse.counter);
+                    if (pulse.counter >= 3)
+                    {
+                        sensors[i] = null;
+                        activeCount--;
+                    }
+                }
+                foreach(Sensor sensor in sensors)
+                {
+                    Console.WriteLine(sensor);
+                }
+                
+                
+                if (activeCount == iranianAgent.weaknesses.Length)
+                {
+                    break;
+                }
+                
+            }
+            suitable = activeCount;
+            Console.WriteLine($"{activeCount}/{iranianAgent.weaknesses.Length}");
+            if (suitable == iranianAgent.weaknesses.Length)
+            {
+                Console.WriteLine("The agent was exposed!!!");
+                return false;
+            }
+            return true;
+        }
 
         
+
+
+
+
     }
 }
